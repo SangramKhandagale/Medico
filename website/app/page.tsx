@@ -48,11 +48,16 @@ const MedicalChatbot = () => {
   const theme = isDarkMode ? darkTheme : lightTheme;
 
   // Initialize service
- useEffect(() => {
-    const service = new MedicalChatbotService(
-      process.env.NEXT_PUBLIC_GROQ_API_KEY,
-      process.env.NEXT_PUBLIC_RAPID_API_KEY 
-    );
+  useEffect(() => {
+    const groqApiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+    const rapidApiKey = process.env.NEXT_PUBLIC_RAPID_API_KEY;
+    
+    if (!groqApiKey || !rapidApiKey) {
+      console.error('Missing required environment variables');
+      return;
+    }
+
+    const service = new MedicalChatbotService(groqApiKey, rapidApiKey);
     setMedicalService(service);
     
     // Add initial greeting
@@ -122,8 +127,6 @@ const MedicalChatbot = () => {
     }
   };
 
-  
-
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -134,8 +137,6 @@ const MedicalChatbot = () => {
       }
     }
   };
-
-
 
   const handleThemeToggle = () => {
     setIsToggling(true);
