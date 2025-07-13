@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Sun, Moon, Send, User, Bot, AlertTriangle, Clock, Heart, Shield, ExternalLink, Loader2, Activity, Stethoscope, FileText } from 'lucide-react';
-import MedicalChatbotService from '@/app/api/backend';
+import MedicalChatbotService from './api/backend';
 import type { MedicalResponse, MedicalMessage, SymptomAnalysis, MedicalSource } from '@/app/api/backend';
 
 const MedicalChatbot = () => {
