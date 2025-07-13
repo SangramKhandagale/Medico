@@ -219,7 +219,7 @@ class MedicalChatbotService {
   /**
    * Fallback medical sources when API fails
    */
-  private getFallbackMedicalSources(userQuery: string): {results: MedicalSource[], relatedTopics: string[]} {
+  private getFallbackMedicalSources(_userQuery: string): {results: MedicalSource[], relatedTopics: string[]} {
     const fallbackSources: MedicalSource[] = [
       {
         position: 1,
