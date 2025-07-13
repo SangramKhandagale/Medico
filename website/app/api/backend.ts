@@ -139,13 +139,13 @@ class MedicalChatbotService {
       
       if (timeSinceLastSearch < this.searchCooldown) {
         console.log('Rate limiting: Using fallback sources');
-        return this.getFallbackMedicalSources(userQuery);
+        return this.getFallbackMedicalSources();
       }
 
       // Check if rapidApiKey is properly configured
       if (!this.rapidApiKey || this.rapidApiKey.trim() === '') {
         console.warn('RapidAPI key not configured, using fallback medical sources');
-        return this.getFallbackMedicalSources(userQuery);
+        return this.getFallbackMedicalSources();
       }
 
       // Create a more targeted search query
@@ -212,14 +212,14 @@ class MedicalChatbotService {
       console.error('Error searching medical information:', error);
       
       // Always use fallback on any error to avoid breaking the app
-      return this.getFallbackMedicalSources(userQuery);
+      return this.getFallbackMedicalSources();
     }
   }
 
   /**
    * Fallback medical sources when API fails
    */
-  private getFallbackMedicalSources(_userQuery: string): {results: MedicalSource[], relatedTopics: string[]} {
+  private getFallbackMedicalSources(): {results: MedicalSource[], relatedTopics: string[]} {
     const fallbackSources: MedicalSource[] = [
       {
         position: 1,
