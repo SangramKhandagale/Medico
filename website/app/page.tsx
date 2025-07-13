@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView, MotionValue } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Sun, Moon, Send, User, Bot, AlertTriangle, Clock, Heart, Shield, ExternalLink, Loader2, Activity, Stethoscope, FileText } from 'lucide-react';
 import MedicalChatbotService from '@/app/api/backend';
 import type { MedicalResponse, MedicalMessage, SymptomAnalysis, MedicalSource } from '@/app/api/backend';
@@ -387,7 +387,7 @@ const MedicalChatbot = () => {
                           whileHover={{ scale: 1.02 }}
                         >
                           <div className="whitespace-pre-wrap text-sm sm:text-base">
-                            {message.content.split('\n').map((paragraph: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, i: React.Key | null | undefined) => (
+                            {message.content.split('\n').map((paragraph, i) => (
                               <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
                             ))}
                           </div>
@@ -527,7 +527,7 @@ const MedicalChatbot = () => {
                     >
                       <h3 className={`font-semibold ${theme.text} mb-3`}>Home Remedies</h3>
                       <div className="space-y-2">
-                        {currentAnalysis.homeRemedies.map((remedy: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | MotionValue<number> | MotionValue<string> | null | undefined, index: React.Key | null | undefined) => (
+                        {currentAnalysis.homeRemedies.map((remedy: string, index: number) => (
                           <motion.div 
                             key={index} 
                             className={`p-2 ${isDarkMode ? 'bg-green-900/50' : 'bg-green-50'} rounded-lg text-sm ${theme.text}`}
@@ -549,7 +549,7 @@ const MedicalChatbot = () => {
                   >
                     <h3 className={`font-semibold ${theme.text} mb-3`}>When to See a Doctor</h3>
                     <div className="space-y-2">
-                      {currentAnalysis.whenToSeeDoctor.map((indicator, index) => (
+                      {currentAnalysis.whenToSeeDoctor.map((indicator: string, index: number) => (
                         <motion.div 
                           key={index} 
                           className={`p-2 ${isDarkMode ? 'bg-red-900/50' : 'bg-red-50'} rounded-lg text-sm ${theme.text}`}
