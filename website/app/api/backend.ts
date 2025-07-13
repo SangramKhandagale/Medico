@@ -48,13 +48,7 @@ interface SearchResponse {
   related_keywords?: (string | { keyword?: string; text?: string })[];
 }
 
-interface AxiosError {
-  message: string;
-  response?: {
-    status: number;
-    data: unknown;
-  };
-}
+
 
 class MedicalChatbotService {
   private groqApiKey: string;
