@@ -34,6 +34,28 @@ export interface MedicalMessage {
   sources?: MedicalSource[];
 }
 
+interface SearchResult {
+  position?: number;
+  url?: string;
+  link?: string;
+  title?: string;
+  description?: string;
+  snippet?: string;
+}
+
+interface SearchResponse {
+  results?: SearchResult[];
+  related_keywords?: (string | { keyword?: string; text?: string })[];
+}
+
+interface AxiosError {
+  message: string;
+  response?: {
+    status: number;
+    data: unknown;
+  };
+}
+
 class MedicalChatbotService {
   private groqApiKey: string;
   private rapidApiKey: string;
@@ -151,10 +173,10 @@ class MedicalChatbotService {
         };
 
         const response = await axios.request(options);
-        const data = response.data;
+        const data = response.data as SearchResponse;
 
         if (data.results && Array.isArray(data.results)) {
-          const results = data.results.map((result: any, index: number) => ({
+          const results = data.results.map((result: SearchResult, index: number) => ({
             position: result.position || index + 1,
             url: result.url || result.link || '#',
             title: result.title || 'No title',
@@ -167,9 +189,9 @@ class MedicalChatbotService {
 
         // Extract related topics
         if (data.related_keywords && Array.isArray(data.related_keywords)) {
-          relatedTopics.push(...data.related_keywords.map((keyword: any) => 
+          relatedTopics.push(...data.related_keywords.map((keyword: string | { keyword?: string; text?: string }) => 
             typeof keyword === 'string' ? keyword : keyword.keyword || keyword.text || ''
-          ).filter((k: any) => k));
+          ).filter((k: string) => k));
         }
       }
 
@@ -193,7 +215,7 @@ class MedicalChatbotService {
         results: uniqueResults, 
         relatedTopics: [...new Set(relatedTopics)].slice(0, 10) 
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error searching medical information:', error);
       return { results: [], relatedTopics: [] };
     }
@@ -332,11 +354,11 @@ Remember: Be helpful but never replace professional medical advice. Use phrases 
           detailedExplanation: parsedResponse.detailedExplanation,
           conversationContext: parsedResponse.conversationContext
         };
-      } catch (err) {
+      } catch {
         // If JSON parsing fails, create a structured response from the text
         return this.createFallbackResponse(userQuery, symptoms, urgencyLevel, aiResponse);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error generating medical response:', error);
       return this.createFallbackResponse(userQuery, symptoms, urgencyLevel);
     }
@@ -478,7 +500,7 @@ Remember: Be helpful but never replace professional medical advice. Use phrases 
       response.formattedResponse = this.formatMedicalResponse(response);
 
       return response;
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error processing medical query:', error);
       
       // Emergency fallback response
