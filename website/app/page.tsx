@@ -122,17 +122,7 @@ const MedicalChatbot = () => {
     }
   };
 
-  const slideInDown = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        ease: ["easeOut"] // Use array for ease
-      }
-    }
-  };
+  
 
   const staggerContainer = {
     hidden: { opacity: 0 },
