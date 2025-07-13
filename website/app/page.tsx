@@ -50,8 +50,8 @@ const MedicalChatbot = () => {
   // Initialize service
   useEffect(() => {
     const service = new MedicalChatbotService(
-      process.env.NEXT_PUBLIC_GROQ_API_KEY || '',
-      process.env.NEXT_PUBLIC_RAPID_API_KEY || ''
+      process.env.NEXT_PUBLIC_GROQ_API_KEY 
+      process.env.NEXT_PUBLIC_RAPID_API_KEY 
     );
     setMedicalService(service);
     
