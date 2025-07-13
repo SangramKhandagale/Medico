@@ -568,7 +568,7 @@ const MedicalChatbot = () => {
               {/* Disclaimer */}
               <motion.div 
                 className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 border-l-4 ${isDarkMode ? 'border-l-amber-400' : 'border-l-amber-500'} ${theme.shadow}`}
-                variants={fadeInScale}
+                
               >
                 <div className="flex items-start space-x-2">
                   <AlertTriangle className={`w-5 h-5 ${isDarkMode ? 'text-amber-400' : 'text-amber-500'} mt-0.5`} />
@@ -618,7 +618,7 @@ const MedicalChatbot = () => {
             <motion.div
               key={index}
               className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 sm:p-6 hover:scale-105 transition-all duration-300 ${theme.shadow}`}
-              variants={feature.direction}
+             
               whileHover={{ y: -5 }}
             >
               <div className={`bg-gradient-to-r ${feature.gradient} w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mb-3 sm:mb-4`}>
