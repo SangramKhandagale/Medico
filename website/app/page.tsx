@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView, MotionValue } from 'framer-motion';
 import { Sun, Moon, Send, User, Bot, AlertTriangle, Clock, Heart, Shield, ExternalLink, Loader2, Activity, Stethoscope, FileText } from 'lucide-react';
 import MedicalChatbotService from '@/app/api/backend';
 import type { MedicalResponse, MedicalMessage, SymptomAnalysis, MedicalSource } from '@/app/api/backend';
@@ -80,9 +80,9 @@ const MedicalChatbot = () => {
 
   // Scroll animation hook
   const useScrollAnimation = () => {
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, amount: 0.3 });
-    return [ref, isInView];
+    return { ref, isInView };
   };
 
   // Animation variants (same as your original)
@@ -129,7 +129,7 @@ const MedicalChatbot = () => {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
+        ease: ["easeOut"] // Use array for ease
       }
     }
   };
@@ -152,7 +152,7 @@ const MedicalChatbot = () => {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut"
+        ease: ["easeOut"]
       }
     }
   };
@@ -272,8 +272,8 @@ const MedicalChatbot = () => {
 
   
   // Get refs for scroll animations
-  const [heroRef, heroInView] = useScrollAnimation();
-  const [featuresRef, featuresInView] = useScrollAnimation();
+  const { ref: heroRef, isInView: heroInView } = useScrollAnimation();
+  const { ref: featuresRef, isInView: featuresInView } = useScrollAnimation();
 
   return (
     <div className={`min-h-screen ${theme.bg} transition-all duration-700 relative overflow-hidden`}>
@@ -341,13 +341,13 @@ const MedicalChatbot = () => {
         >
           <motion.h2 
             className={`text-3xl sm:text-4xl md:text-5xl font-bold ${theme.text} mb-4 sm:mb-6`}
-            variants={slideInDown}
+           
           >
             AI Medical Assistant
           </motion.h2>
           <motion.p 
             className={`text-lg sm:text-xl ${theme.textSecondary} mb-6 sm:mb-8 max-w-2xl mx-auto px-4`}
-            variants={slideInUp}
+           
           >
             Get instant symptom analysis, health guidance, and medical information from our AI-powered assistant.
           </motion.p>
@@ -359,7 +359,7 @@ const MedicalChatbot = () => {
             {/* Chat Section */}
             <motion.div 
               className="flex-1 lg:flex-[2]"
-              variants={slideInLeft}
+          
               initial="hidden"
               animate="visible"
             >
@@ -397,7 +397,7 @@ const MedicalChatbot = () => {
                           whileHover={{ scale: 1.02 }}
                         >
                           <div className="whitespace-pre-wrap text-sm sm:text-base">
-                            {message.content.split('\n').map((paragraph, i) => (
+                            {message.content.split('\n').map((paragraph: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, i: React.Key | null | undefined) => (
                               <p key={i} className="mb-2 last:mb-0">{paragraph}</p>
                             ))}
                           </div>
@@ -477,7 +477,7 @@ const MedicalChatbot = () => {
             {/* Analysis Panel */}
             <motion.div 
               className="w-full lg:w-80 space-y-4"
-              variants={slideInRight}
+             
               initial="hidden"
               animate="visible"
             >
@@ -486,7 +486,7 @@ const MedicalChatbot = () => {
                   {/* Urgency Level */}
                   <motion.div 
                     className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 ${theme.shadow}`}
-                    variants={fadeInScale}
+                   
                   >
                     <h3 className={`font-semibold ${theme.text} mb-3`}>Urgency Assessment</h3>
                     <div className={`p-3 rounded-lg border-2 ${getUrgencyColor(currentAnalysis.urgencyLevel)}`}>
@@ -500,11 +500,11 @@ const MedicalChatbot = () => {
                   {/* Possible Conditions */}
                   <motion.div 
                     className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 ${theme.shadow}`}
-                    variants={fadeInScale}
+                  
                   >
                     <h3 className={`font-semibold ${theme.text} mb-3`}>Possible Conditions</h3>
                     <div className="space-y-2">
-                      {currentAnalysis.possibleConditions.map((condition, index) => (
+                      {currentAnalysis.possibleConditions.map((condition: string, index: number) => (
                         <motion.div 
                           key={index} 
                           className={`p-2 ${isDarkMode ? 'bg-blue-900/50' : 'bg-blue-50'} rounded-lg text-sm ${theme.text}`}
@@ -521,7 +521,7 @@ const MedicalChatbot = () => {
                   {/* Recommended Action */}
                   <motion.div 
                     className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 ${theme.shadow}`}
-                    variants={fadeInScale}
+                  
                   >
                     <h3 className={`font-semibold ${theme.text} mb-3`}>Recommended Action</h3>
                     <p className={`text-sm ${theme.text} ${isDarkMode ? 'bg-yellow-900/50' : 'bg-yellow-50'} p-3 rounded-lg`}>
@@ -533,11 +533,11 @@ const MedicalChatbot = () => {
                   {currentAnalysis.homeRemedies.length > 0 && (
                     <motion.div 
                       className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 ${theme.shadow}`}
-                      variants={fadeInScale}
+                   
                     >
                       <h3 className={`font-semibold ${theme.text} mb-3`}>Home Remedies</h3>
                       <div className="space-y-2">
-                        {currentAnalysis.homeRemedies.map((remedy, index) => (
+                        {currentAnalysis.homeRemedies.map((remedy: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | MotionValue<number> | MotionValue<string> | null | undefined, index: React.Key | null | undefined) => (
                           <motion.div 
                             key={index} 
                             className={`p-2 ${isDarkMode ? 'bg-green-900/50' : 'bg-green-50'} rounded-lg text-sm ${theme.text}`}
@@ -555,7 +555,7 @@ const MedicalChatbot = () => {
                   {/* When to See Doctor */}
                   <motion.div 
                     className={`${theme.cardBg} ${theme.border} border rounded-xl p-4 ${theme.shadow}`}
-                    variants={fadeInScale}
+                 
                   >
                     <h3 className={`font-semibold ${theme.text} mb-3`}>When to See a Doctor</h3>
                     <div className="space-y-2">
