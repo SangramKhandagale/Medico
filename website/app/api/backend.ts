@@ -314,7 +314,7 @@ Please provide a comprehensive but cautious response in JSON format with the fol
 Remember: Be helpful but never replace professional medical advice. Use phrases like "may indicate", "could be", "consider consulting" rather than definitive statements.`;
 
       // Fix: Check if groqApiKey is empty or undefined properly
-      if (!this.groqApiKey || this.groqApiKey.trim() === '' || this.groqApiKey === 'your-groq-api-key-here') {
+      if (!this.groqApiKey || this.groqApiKey.trim() === '' || this.groqApiKey === process.env.NEXT_PUBLIC_GROQ_API_KEY ) {
         throw new Error('Groq API key is not configured');
       }
 
