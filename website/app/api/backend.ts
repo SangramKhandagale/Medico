@@ -131,8 +131,8 @@ class MedicalChatbotService {
         `${userQuery} medical advice health information`
       ];
 
-      let allResults: MedicalSource[] = [];
-      let relatedTopics: string[] = [];
+      const allResults: MedicalSource[] = [];
+      const relatedTopics: string[] = [];
 
       // Search with multiple queries for comprehensive results
       for (const query of searchQueries.slice(0, 3)) { // Limit to 3 searches
@@ -332,7 +332,7 @@ Remember: Be helpful but never replace professional medical advice. Use phrases 
           detailedExplanation: parsedResponse.detailedExplanation,
           conversationContext: parsedResponse.conversationContext
         };
-      } catch (parseError) {
+      } catch (err) {
         // If JSON parsing fails, create a structured response from the text
         return this.createFallbackResponse(userQuery, symptoms, urgencyLevel, aiResponse);
       }
