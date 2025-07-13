@@ -48,14 +48,12 @@ const MedicalChatbot = () => {
   const theme = isDarkMode ? darkTheme : lightTheme;
 
   // Initialize service
- const groqKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
-const rapidKey = process.env.NEXT_PUBLIC_RAPID_API_KEY;
-
-if (!groqKey || !rapidKey) {
-  throw new Error('API keys are missing from environment variables.');
-}
-
-const service = new MedicalChatbotService(groqKey, rapidKey);
+ useEffect(() => {
+    const service = new MedicalChatbotService(
+      process.env.NEXT_PUBLIC_GROQ_API_KEY,
+      process.env.NEXT_PUBLIC_RAPID_API_KEY 
+    );
+    setMedicalService(service);
     
     // Add initial greeting
     const greeting: MedicalMessage = {
